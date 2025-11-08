@@ -79,7 +79,9 @@ packaging==25.0
     #   altair
     #   streamlit
 pandas==2.3.3
-    # via streamlit
+    # via
+    #   combined-token-counter (pyproject.toml)
+    #   streamlit
 pillow==12.0.0
     # via streamlit
 protobuf==6.33.0
