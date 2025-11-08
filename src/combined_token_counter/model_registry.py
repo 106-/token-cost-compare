@@ -25,6 +25,11 @@ ALL_MODELS: Dict[str, Dict[str, str]] = {
     "Gemini 2.5 Flash-Lite": {"id": "gemini-2.5-flash-lite", "provider": "gemini", "icon": "💎"},
     "Gemini 2.0 Flash": {"id": "gemini-2.0-flash", "provider": "gemini", "icon": "💎"},
     "Gemini 2.5 Pro": {"id": "gemini-2.5-pro", "provider": "gemini", "icon": "💎"},
+    # Grok models
+    "Grok 3": {"id": "grok-3", "provider": "grok", "icon": "⚡"},
+    "Grok 3 Mini": {"id": "grok-3-mini", "provider": "grok", "icon": "⚡"},
+    "Grok 4": {"id": "grok-4", "provider": "grok", "icon": "⚡"},
+    "Grok 4 Fast": {"id": "grok-4-fast", "provider": "grok", "icon": "⚡"},
 }
 
 # Model pricing (USD per million tokens)
@@ -47,6 +52,11 @@ MODEL_PRICING: Dict[str, Dict[str, float]] = {
     "gemini-2.5-flash-lite": {"input": 0.10, "output": 0.40},
     "gemini-2.0-flash": {"input": 0.10, "output": 0.40},
     "gemini-2.5-pro": {"input": 1.25, "output": 10.00},
+    # Grok
+    "grok-3": {"input": 3.00, "output": 15.00},
+    "grok-3-mini": {"input": 0.30, "output": 0.50},
+    "grok-4": {"input": 3.00, "output": 15.00},
+    "grok-4-fast": {"input": 0.20, "output": 0.50},
 }
 
 

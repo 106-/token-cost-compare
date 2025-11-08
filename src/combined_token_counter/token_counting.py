@@ -8,6 +8,7 @@ import pandas as pd
 import tiktoken
 from anthropic import Anthropic
 from google import genai
+from xai_sdk import Client as XAIClient
 
 from .model_registry import ALL_MODELS, get_pricing
 
@@ -57,6 +58,17 @@ def count_tokens_with_claude(text: str, model: str, api_key: str) -> Dict[str, i
         return {"success": False, "error": str(exc)}
 
 
+def count_tokens_with_grok(text: str, model: str, api_key: str) -> Dict[str, int | bool | str]:
+    """Count tokens using the xAI Grok API."""
+
+    try:
+        client = XAIClient(api_key=api_key)
+        tokens = client.tokenize.tokenize_text(text=text, model=model)
+        return {"success": True, "input_tokens": len(tokens)}
+    except Exception as exc:
+        return {"success": False, "error": str(exc)}
+
+
 def get_token_count(text: str, model_name: str, api_keys: ApiKeyMap) -> Dict[str, int | bool | str]:
     """Get the token count for a single model entry."""
 
@@ -75,6 +87,10 @@ def get_token_count(text: str, model_name: str, api_keys: ApiKeyMap) -> Dict[str
         if not api_keys.get("google"):
             return {"success": False, "error": "Gemini API key not configured"}
         return count_tokens_with_gemini(text, model_id, api_keys["google"] or "")
+    if provider == "grok":
+        if not api_keys.get("xai"):
+            return {"success": False, "error": "xAI API key not configured"}
+        return count_tokens_with_grok(text, model_id, api_keys["xai"] or "")
 
     return {"success": False, "error": f"Unsupported provider: {provider}"}
 
