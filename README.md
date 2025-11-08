@@ -15,6 +15,8 @@ https://token-cost-compare.streamlit.app/
 - **Multi-Provider Comparison**: Compare token counts and costs side-by-side for Claude, OpenAI, and Gemini
 - **Official APIs**: Uses official SDKs from Anthropic, OpenAI (tiktoken), and Google for accurate token counting
 - **Real-time Token Counting**: Instant feedback as you type
+- **File Upload Workflow**: Upload UTF-8 text files and batch-count tokens without copy/paste
+- **Multipage UI**: Switch between text input and file upload flows via Streamlit's Pages sidebar
 - **Cost Estimation**: Accurate pricing for input/output tokens
 - **Multiple Models**: Support for 15+ models across all three providers
 - **No OpenAI API Key Required**: Uses `tiktoken` for local OpenAI token counting
@@ -88,15 +90,27 @@ The app will be available at `http://localhost:8501`
 
 ### How to Use
 
-1. **Enter Text**: Type or paste your text into the input area
-2. **Select Models**: Choose models for each provider from the sidebar
-3. **View Results**: Compare token counts and costs across all three providers
+1. **Pick a Workflow**: Use the Pages sidebar to open either "Text Input" or "File Upload".
+2. **Provide Content**:
+   - *Text Input*: Type or paste text into the editor.
+   - *File Upload*: Select a UTF-8 `.txt`, `.md`, `.json`, `.csv`, or `.log` file.
+3. **Select Models**: Add/remove models from the sidebar to focus on the providers you care about.
+4. **Review Metrics**: Basic stats (characters, file size) appear above a comparison table with token counts and estimated costs.
 
 ## Project Structure
 
 ```
 combined-token-counter/
-├── app.py                          # Main Streamlit application
+├── app.py                          # Streamlit entry that links to sub-pages
+├── pages/
+│   ├── 0_Text_Input.py             # Manual text input workflow
+│   └── 1_File_Upload.py            # UTF-8 file upload workflow
+├── src/combined_token_counter/
+│   ├── __init__.py
+│   ├── config.py                   # Secrets/API key helpers
+│   ├── model_registry.py           # Model metadata and pricing tables
+│   ├── token_counting.py           # Token counting + cost utilities
+│   └── ui.py                       # Shared sidebar/model selection widgets
 ├── pyproject.toml                  # Project dependencies (uv)
 ├── Makefile                        # Development commands
 ├── requirements.txt                # Frozen dependencies (for deployment)
