@@ -69,7 +69,9 @@ def main() -> None:
     if len(st.session_state.selected_models) > 0:
         st.subheader("Model Comparison")
         with st.spinner("Calculating token counts..."):
-            df = get_model_comparison_data(text, st.session_state.selected_models, api_keys)
+            df = get_model_comparison_data(
+                text, st.session_state.selected_models, api_keys, include_per_char=True
+            )
         st.dataframe(df, use_container_width=True, hide_index=True)
     else:
         st.warning("No models selected. Add at least one model from the sidebar.")

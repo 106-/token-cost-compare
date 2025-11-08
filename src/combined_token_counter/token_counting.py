@@ -96,11 +96,12 @@ def get_token_count(text: str, model_name: str, api_keys: ApiKeyMap) -> Dict[str
 
 
 def get_model_comparison_data(
-    text: str, selected_models: List[str], api_keys: ApiKeyMap
+    text: str, selected_models: List[str], api_keys: ApiKeyMap, include_per_char: bool = False
 ) -> pd.DataFrame:
     """Return a comparison table for the selected models."""
 
     data = []
+    char_count = len(text)
 
     for model_name in selected_models:
         model_info = ALL_MODELS[model_name]
@@ -113,26 +114,29 @@ def get_model_comparison_data(
         if result["success"]:
             tokens = result["input_tokens"]
             cost = calculate_cost(tokens, pricing, "input")
-            data.append(
-                {
-                    "Model": f"{icon} {model_name}",
-                    "Provider": model_info["provider"].title(),
-                    "Tokens": tokens,
-                    "Input Cost": f"${cost:.6f}",
-                    "Input Price": f"${pricing.get('input', 0):.2f} / 1M",
-                    "Output Price": f"${pricing.get('output', 0):.2f} / 1M",
-                }
-            )
+            row = {
+                "Model": f"{icon} {model_name}",
+                "Provider": model_info["provider"].title(),
+                "Tokens": tokens,
+                "Input Cost": f"${cost:.6f}",
+                "Input Price": f"${pricing.get('input', 0):.2f} / 1M",
+                "Output Price": f"${pricing.get('output', 0):.2f} / 1M",
+            }
+            if include_per_char and char_count > 0:
+                cost_per_char = cost / char_count
+                row["Cost per Char"] = f"${cost_per_char:.8f}"
+            data.append(row)
         else:
-            data.append(
-                {
-                    "Model": f"{icon} {model_name}",
-                    "Provider": model_info["provider"].title(),
-                    "Tokens": "Error",
-                    "Input Cost": result["error"],
-                    "Input Price": "-",
-                    "Output Price": "-",
-                }
-            )
+            row = {
+                "Model": f"{icon} {model_name}",
+                "Provider": model_info["provider"].title(),
+                "Tokens": "Error",
+                "Input Cost": result["error"],
+                "Input Price": "-",
+                "Output Price": "-",
+            }
+            if include_per_char:
+                row["Cost per Char"] = "-"
+            data.append(row)
 
     return pd.DataFrame(data)
