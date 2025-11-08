@@ -1,6 +1,6 @@
 # Token Cost Compare
 
-A Streamlit application that compares token counts and costs across three major LLM providers: **Claude**, **OpenAI**, and **Gemini**.
+A Streamlit application that compares token counts and costs across four major LLM providers: **Claude**, **OpenAI**, **Gemini**, and **Grok**.
 
 ![Python](https://img.shields.io/badge/Python-3.12+-blue.svg)
 ![Streamlit](https://img.shields.io/badge/Streamlit-1.51+-red.svg)
@@ -12,14 +12,15 @@ https://token-cost-compare.streamlit.app/
 
 ## Features
 
-- **Multi-Provider Comparison**: Compare token counts and costs side-by-side for Claude, OpenAI, and Gemini
-- **Official APIs**: Uses official SDKs from Anthropic, OpenAI (tiktoken), and Google for accurate token counting
+- **Multi-Provider Comparison**: Compare token counts and costs side-by-side for Claude, OpenAI, Gemini, and Grok
+- **Official APIs**: Uses official SDKs from Anthropic, OpenAI (tiktoken), Google, and xAI for accurate token counting
 - **Real-time Token Counting**: Instant feedback as you type
 - **File Upload Workflow**: Upload UTF-8 text files and batch-count tokens without copy/paste
 - **Multipage UI**: Switch between text input and file upload flows via Streamlit's Pages sidebar
 - **Cost Estimation**: Accurate pricing for input/output tokens
-- **Multiple Models**: Support for 15+ models across all three providers
+- **Multiple Models**: Support for 19+ models across all four providers
 - **No OpenAI API Key Required**: Uses `tiktoken` for local OpenAI token counting
+- **Per-Character Cost Analysis**: File upload page includes cost per character metric
 
 ## Supported Models
 
@@ -44,14 +45,20 @@ https://token-cost-compare.streamlit.app/
 - Gemini 2.0 Flash
 - Gemini 2.5 Pro
 
+### Grok (xAI)
+- Grok 3
+- Grok 3 Mini
+- Grok 4
+- Grok 4 Fast
+
 ## Installation
 
 This project uses [uv](https://github.com/astral-sh/uv) for dependency management.
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/combined-token-counter.git
-cd combined-token-counter
+git clone https://github.com/106-/token-cost-compare.git
+cd token-cost-compare
 
 # Install dependencies
 uv sync
@@ -75,6 +82,10 @@ ANTHROPIC_API_KEY = "sk-ant-your-api-key-here"
 # Google API Key (for Gemini)
 # Get your API key from https://aistudio.google.com/apikey
 GOOGLE_API_KEY = "your-google-api-key-here"
+
+# xAI API Key (for Grok)
+# Get your API key from https://console.x.ai/
+XAI_API_KEY = "your-xai-api-key-here"
 ```
 
 **Note**: OpenAI API key is not required as token counting is done locally using `tiktoken`.
@@ -137,9 +148,15 @@ All prices are per million tokens (USD):
 
 ### Gemini
 - 2.5 Flash: $0.30 (in) / $2.50 (out)
-- 2.5 Flash-Lite: $0.10 (in) / $0.40 (out) - **Most affordable!**
+- 2.5 Flash-Lite: $0.10 (in) / $0.40 (out)
 - 2.0 Flash: $0.10 (in) / $0.40 (out)
 - 2.5 Pro: $1.25 (in) / $10.00 (out)
+
+### Grok
+- Grok 3: $3.00 (in) / $15.00 (out)
+- Grok 3 Mini: $0.30 (in) / $0.50 (out)
+- Grok 4: $3.00 (in) / $15.00 (out)
+- Grok 4 Fast: $0.20 (in) / $0.50 (out)
 
 *Note: Prices may vary based on usage tier, caching, and other factors. Always check official pricing pages.*
 
@@ -149,6 +166,7 @@ All prices are per million tokens (USD):
 - `anthropic>=0.72.0` - Claude API client
 - `tiktoken>=0.12.0` - OpenAI tokenizer (local)
 - `google-genai>=1.49.0` - Gemini API client
+- `xai-sdk>=1.4.0` - Grok API client
 
 ## Development
 
@@ -182,7 +200,7 @@ MIT License - feel free to use this project for any purpose.
 ## Acknowledgments
 
 - Built with [Streamlit](https://streamlit.io/)
-- Uses official SDKs from [Anthropic](https://www.anthropic.com/), [OpenAI](https://openai.com/), and [Google](https://ai.google.dev/)
+- Uses official SDKs from [Anthropic](https://www.anthropic.com/), [OpenAI](https://openai.com/), [Google](https://ai.google.dev/), and [xAI](https://x.ai/)
 - Dependency management by [uv](https://github.com/astral-sh/uv)
 
 ## Contributing
@@ -199,4 +217,4 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 Token counts and pricing are estimates and may differ from actual usage. Always refer to official provider documentation for the most accurate information.
 
-This tool is not affiliated with Anthropic, OpenAI, or Google.
+This tool is not affiliated with Anthropic, OpenAI, Google, or xAI.
