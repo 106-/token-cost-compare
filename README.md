@@ -1,26 +1,28 @@
 # Token Cost Compare
 
-A Streamlit application that compares token counts and costs across four major LLM providers: **Claude**, **OpenAI**, **Gemini**, and **Grok**.
+A token counting and cost comparison tool for four major LLM providers: **Claude**, **OpenAI**, **Gemini**, and **Grok**.
+
+Use it as a **Streamlit web app** or as a **Python module** in your code.
 
 ![Python](https://img.shields.io/badge/Python-3.12+-blue.svg)
 ![Streamlit](https://img.shields.io/badge/Streamlit-1.51+-red.svg)
 ![License](https://img.shields.io/badge/License-MIT-green.svg)
 
-You can use this app from link below:
-
-https://token-cost-compare.streamlit.app/
+**Try the web app:** https://token-cost-compare.streamlit.app/
 
 ## Features
 
+- **Dual Usage**: Use as a Streamlit web app or import as a Python module in your code
 - **Multi-Provider Comparison**: Compare token counts and costs side-by-side for Claude, OpenAI, Gemini, and Grok
 - **Official APIs**: Uses official SDKs from Anthropic, OpenAI (tiktoken), Google, and xAI for accurate token counting
-- **Real-time Token Counting**: Instant feedback as you type
-- **File Upload Workflow**: Upload UTF-8 text files and batch-count tokens without copy/paste
-- **Multipage UI**: Switch between text input and file upload flows via Streamlit's Pages sidebar
+- **Real-time Token Counting**: Instant feedback as you type (web app)
+- **File Upload Workflow**: Upload UTF-8 text files and batch-count tokens without copy/paste (web app)
+- **Multipage UI**: Switch between text input and file upload flows via Streamlit's Pages sidebar (web app)
+- **Programmatic Access**: Use TokenCounter class in your Python scripts with simple API (module)
 - **Cost Estimation**: Accurate pricing for input/output tokens
 - **Multiple Models**: Support for 19+ models across all four providers
 - **No OpenAI API Key Required**: Uses `tiktoken` for local OpenAI token counting
-- **Per-Character Cost Analysis**: File upload page includes cost per character metric
+- **Per-Character Cost Analysis**: File upload page includes cost per character metric (web app)
 
 ## Supported Models
 
@@ -52,6 +54,41 @@ https://token-cost-compare.streamlit.app/
 - Grok 4 Fast
 
 ## Installation
+
+### As a Python Package
+
+You can install this package directly from GitHub without cloning the repository:
+
+```bash
+# Using pip
+pip install git+https://github.com/106-/token-cost-compare.git
+
+# Using uv
+uv pip install git+https://github.com/106-/token-cost-compare.git
+```
+
+Or add it to your `requirements.txt`:
+
+```txt
+# Install from main branch
+git+https://github.com/106-/token-cost-compare.git
+
+# Install from specific branch
+git+https://github.com/106-/token-cost-compare.git@main
+
+# Install from specific tag or commit
+git+https://github.com/106-/token-cost-compare.git@v1.0.0
+```
+
+Then install with:
+
+```bash
+pip install -r requirements.txt
+# or
+uv pip install -r requirements.txt
+```
+
+### For Development
 
 This project uses [uv](https://github.com/astral-sh/uv) for dependency management.
 
