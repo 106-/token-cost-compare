@@ -92,6 +92,8 @@ XAI_API_KEY = "your-xai-api-key-here"
 
 ## Usage
 
+### As a Streamlit Web App
+
 ```bash
 # Run the Streamlit app
 uv run streamlit run app.py
@@ -99,7 +101,7 @@ uv run streamlit run app.py
 
 The app will be available at `http://localhost:8501`
 
-### How to Use
+#### How to Use the Web App
 
 1. **Pick a Workflow**: Use the Pages sidebar to open either "Text Input" or "File Upload".
 2. **Provide Content**:
@@ -107,6 +109,69 @@ The app will be available at `http://localhost:8501`
    - *File Upload*: Select a UTF-8 `.txt`, `.md`, `.json`, `.csv`, or `.log` file.
 3. **Select Models**: Add/remove models from the sidebar to focus on the providers you care about.
 4. **Review Metrics**: Basic stats (characters, file size) appear above a comparison table with token counts and estimated costs.
+
+### As a Python Module
+
+You can also use this package programmatically in your Python code:
+
+```python
+from combined_token_counter import TokenCounter
+
+# Initialize with API keys
+counter = TokenCounter(
+    anthropic_api_key="sk-ant-...",  # Required for Claude models
+    google_api_key="AI...",          # Required for Gemini models
+    xai_api_key="xai-..."            # Required for Grok models
+)
+
+# Count tokens for a single model
+text = "Hello, world! This is a test message."
+result = counter.count(text, "GPT-4o")
+
+if result["success"]:
+    print(f"Tokens: {result['tokens']}")
+    print(f"Cost: ${result['cost']:.6f}")
+    print(f"Input price: ${result['input_price']:.2f}/1M tokens")
+    print(f"Output price: ${result['output_price']:.2f}/1M tokens")
+
+# Compare across multiple models
+models = ["GPT-4o", "Claude Sonnet 4.5", "Gemini 2.5 Flash"]
+results = counter.compare(text, models)
+
+for result in results:
+    if result["success"]:
+        print(f"{result['model_name']}: {result['tokens']} tokens, ${result['cost']:.6f}")
+
+# Get available models
+models = counter.get_available_models()
+print(f"Available models: {models}")
+
+# Get model information
+info = counter.get_model_info("GPT-4o")
+print(f"Model ID: {info['id']}, Provider: {info['provider']}")
+```
+
+#### TokenCounter API
+
+**`__init__(anthropic_api_key=None, google_api_key=None, xai_api_key=None)`**
+- Initialize the token counter with API keys
+- OpenAI models don't require an API key (uses local tiktoken)
+
+**`count(text, model_name, token_type="input")`**
+- Count tokens and calculate cost for given text
+- Returns dict with `success`, `tokens`, `cost`, `input_price`, `output_price`, etc.
+- `token_type` can be "input" or "output" for cost calculation
+
+**`compare(text, model_names=None)`**
+- Compare tokens across multiple models
+- If `model_names` is None, compares all available models
+- Returns list of dicts with results for each model
+
+**`get_available_models()`**
+- Returns list of all available model display names
+
+**`get_model_info(model_name)`**
+- Returns dict with `id`, `provider`, and `icon` for the model
 
 ## Project Structure
 
@@ -119,9 +184,12 @@ combined-token-counter/
 ├── src/combined_token_counter/
 │   ├── __init__.py
 │   ├── config.py                   # Secrets/API key helpers
+│   ├── counter.py                  # TokenCounter class for programmatic use
 │   ├── model_registry.py           # Model metadata and pricing tables
 │   ├── token_counting.py           # Token counting + cost utilities
 │   └── ui.py                       # Shared sidebar/model selection widgets
+├── tests/
+│   └── test_counter.py             # Unit tests for TokenCounter
 ├── pyproject.toml                  # Project dependencies (uv)
 ├── Makefile                        # Development commands
 ├── requirements.txt                # Frozen dependencies (for deployment)
@@ -189,6 +257,12 @@ All prices are per million tokens (USD):
 ### Running Tests
 
 ```bash
+# Run unit tests
+uv run pytest tests/ -v
+
+# Run tests with coverage
+uv run pytest tests/ --cov=src/combined_token_counter --cov-report=html
+
 # Run the app in development mode
 uv run streamlit run app.py --server.runOnSave true
 ```

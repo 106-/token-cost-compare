@@ -1,6 +1,7 @@
 """Shared token counting utilities for the Streamlit app."""
 
 from .config import load_api_keys
+from .counter import TokenCounter
 from .model_registry import ALL_MODELS, MODEL_PRICING
 from .token_counting import (
     calculate_cost,
@@ -16,6 +17,7 @@ __all__ = [
     "ALL_MODELS",
     "MODEL_PRICING",
     "DEFAULT_MODELS",
+    "TokenCounter",
     "calculate_cost",
     "count_tokens_with_claude",
     "count_tokens_with_gemini",

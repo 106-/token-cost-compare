@@ -1,4 +1,4 @@
-.PHONY: help dev format lint check clean install requirements
+.PHONY: help dev format lint check clean install requirements test
 
 help:
 	@echo "Available commands:"
@@ -6,6 +6,7 @@ help:
 	@echo "  make format       - Format code with ruff"
 	@echo "  make lint         - Check code with ruff (no fixes)"
 	@echo "  make check        - Run ruff check and format check"
+	@echo "  make test         - Run unit tests with pytest"
 	@echo "  make clean        - Remove Python cache files"
 	@echo "  make install      - Install dependencies with uv"
 	@echo "  make requirements - Generate requirements.txt for Streamlit deployment"
@@ -35,3 +36,6 @@ install:
 requirements:
 	uv pip compile pyproject.toml -o requirements.txt
 	@echo "requirements.txt generated successfully!"
+
+test:
+	uv run pytest tests/ -v
