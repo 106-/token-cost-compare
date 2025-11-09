@@ -4,7 +4,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from combined_token_counter import TokenCounter
+from token_cost_compare import TokenCounter
 
 
 class TestTokenCounter:
@@ -28,7 +28,7 @@ class TestTokenCounter:
         assert counter._api_keys["google"] is None
         assert counter._api_keys["xai"] is None
 
-    @patch("combined_token_counter.counter.get_token_count")
+    @patch("token_cost_compare.counter.get_token_count")
     def test_count_success(self, mock_get_token_count):
         """Test successful token counting."""
         mock_get_token_count.return_value = {"success": True, "input_tokens": 100}
@@ -44,7 +44,7 @@ class TestTokenCounter:
         assert result["model_id"] == "gpt-4o"
         assert result["provider"] == "openai"
 
-    @patch("combined_token_counter.counter.get_token_count")
+    @patch("token_cost_compare.counter.get_token_count")
     def test_count_with_output_token_type(self, mock_get_token_count):
         """Test token counting with output token type."""
         mock_get_token_count.return_value = {"success": True, "input_tokens": 50}
@@ -57,7 +57,7 @@ class TestTokenCounter:
         # Output pricing should be used for cost calculation
         assert result["cost"] > 0
 
-    @patch("combined_token_counter.counter.get_token_count")
+    @patch("token_cost_compare.counter.get_token_count")
     def test_count_api_error(self, mock_get_token_count):
         """Test token counting when API returns an error."""
         mock_get_token_count.return_value = {
@@ -80,7 +80,7 @@ class TestTokenCounter:
         assert result["success"] is False
         assert "Unknown model" in result["error"]
 
-    @patch("combined_token_counter.counter.get_token_count")
+    @patch("token_cost_compare.counter.get_token_count")
     def test_compare_multiple_models(self, mock_get_token_count):
         """Test comparing token counts across multiple models."""
 
@@ -100,7 +100,7 @@ class TestTokenCounter:
             assert "tokens" in result
             assert "cost" in result
 
-    @patch("combined_token_counter.counter.get_token_count")
+    @patch("token_cost_compare.counter.get_token_count")
     def test_compare_all_models(self, mock_get_token_count):
         """Test comparing without specifying models (uses all models)."""
         mock_get_token_count.return_value = {"success": True, "input_tokens": 42}
@@ -112,7 +112,7 @@ class TestTokenCounter:
         assert len(results) > 0
         assert all("model_name" in result for result in results)
 
-    @patch("combined_token_counter.counter.get_token_count")
+    @patch("token_cost_compare.counter.get_token_count")
     def test_compare_with_errors(self, mock_get_token_count):
         """Test compare when some models fail."""
 
@@ -162,7 +162,7 @@ class TestTokenCounter:
 class TestTokenCounterIntegration:
     """Integration tests with real tokenizers (mocking only API calls)."""
 
-    @patch("combined_token_counter.token_counting.Anthropic")
+    @patch("token_cost_compare.token_counting.Anthropic")
     def test_claude_token_counting(self, mock_anthropic):
         """Test Claude token counting with mocked API."""
         mock_client = MagicMock()
@@ -189,7 +189,7 @@ class TestTokenCounterIntegration:
         assert result["tokens"] > 0
         assert isinstance(result["tokens"], int)
 
-    @patch("combined_token_counter.token_counting.genai.Client")
+    @patch("token_cost_compare.token_counting.genai.Client")
     def test_gemini_token_counting(self, mock_genai_client):
         """Test Gemini token counting with mocked API."""
         mock_client = MagicMock()
@@ -205,7 +205,7 @@ class TestTokenCounterIntegration:
         assert result["tokens"] == 20
         mock_client.models.count_tokens.assert_called_once()
 
-    @patch("combined_token_counter.token_counting.XAIClient")
+    @patch("token_cost_compare.token_counting.XAIClient")
     def test_grok_token_counting(self, mock_xai_client):
         """Test Grok token counting with mocked API."""
         mock_client = MagicMock()
@@ -223,7 +223,7 @@ class TestTokenCounterIntegration:
 class TestTokenCounterPricing:
     """Test pricing calculations."""
 
-    @patch("combined_token_counter.counter.get_token_count")
+    @patch("token_cost_compare.counter.get_token_count")
     def test_input_cost_calculation(self, mock_get_token_count):
         """Test input token cost calculation."""
         mock_get_token_count.return_value = {"success": True, "input_tokens": 1_000_000}
@@ -235,7 +235,7 @@ class TestTokenCounterPricing:
         assert result["success"] is True
         assert result["cost"] == pytest.approx(2.50, rel=0.01)
 
-    @patch("combined_token_counter.counter.get_token_count")
+    @patch("token_cost_compare.counter.get_token_count")
     def test_output_cost_calculation(self, mock_get_token_count):
         """Test output token cost calculation."""
         mock_get_token_count.return_value = {"success": True, "input_tokens": 1_000_000}
@@ -247,7 +247,7 @@ class TestTokenCounterPricing:
         assert result["success"] is True
         assert result["cost"] == pytest.approx(10.00, rel=0.01)
 
-    @patch("combined_token_counter.counter.get_token_count")
+    @patch("token_cost_compare.counter.get_token_count")
     def test_cost_calculation_small_tokens(self, mock_get_token_count):
         """Test cost calculation for small token counts."""
         mock_get_token_count.return_value = {"success": True, "input_tokens": 100}

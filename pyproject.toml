@@ -1,5 +1,5 @@
 [project]
-name = "combined-token-counter"
+name = "token-cost-compare"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
@@ -36,4 +36,4 @@ select = [
 ignore = []
 
 [tool.ruff.lint.isort]
-known-first-party = ["combined-token-counter"]
+known-first-party = ["token-cost-compare"]

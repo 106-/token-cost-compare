@@ -17,7 +17,7 @@ if SRC_DIR.exists():
     if src_path not in sys.path:
         sys.path.append(src_path)
 
-from combined_token_counter import (  # noqa: E402
+from token_cost_compare import (  # noqa: E402
     get_model_comparison_data,
     init_model_selection,
     load_api_keys,

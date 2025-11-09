@@ -1,6 +1,6 @@
 """Example usage of TokenCounter class."""
 
-from combined_token_counter import TokenCounter
+from token_cost_compare import TokenCounter
 
 # Initialize without API keys (can still use OpenAI models with local tiktoken)
 counter = TokenCounter()

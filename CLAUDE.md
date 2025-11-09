@@ -30,12 +30,12 @@ make requirements
 The codebase is organized as a Streamlit multipage app with modularized shared components:
 
 ```
-combined-token-counter/
+token-cost-compare/
 ├── app.py                          # Entry point (directs to pages)
 ├── pages/
 │   ├── 0_Text_Input.py             # Manual text input workflow
 │   └── 1_File_Upload.py            # UTF-8 file upload workflow
-└── src/combined_token_counter/
+└── src/token_cost_compare/
     ├── config.py                   # API key management
     ├── model_registry.py           # Model metadata and pricing
     ├── token_counting.py           # Token counting logic
@@ -87,7 +87,7 @@ uv add package-name
 
 ### Adding New Models
 
-1. Update `ALL_MODELS` in `src/combined_token_counter/model_registry.py`:
+1. Update `ALL_MODELS` in `src/token_cost_compare/model_registry.py`:
    ```python
    "Display Name": {
        "provider": "claude" | "openai" | "gemini",
@@ -104,7 +104,7 @@ uv add package-name
    }
    ```
 
-3. For new providers, add token counting logic to `src/combined_token_counter/token_counting.py`
+3. For new providers, add token counting logic to `src/token_cost_compare/token_counting.py`
 
 ### Code Style
 

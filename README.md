@@ -115,7 +115,7 @@ The app will be available at `http://localhost:8501`
 You can also use this package programmatically in your Python code:
 
 ```python
-from combined_token_counter import TokenCounter
+from token_cost_compare import TokenCounter
 
 # Initialize with API keys
 counter = TokenCounter(
@@ -176,12 +176,12 @@ print(f"Model ID: {info['id']}, Provider: {info['provider']}")
 ## Project Structure
 
 ```
-combined-token-counter/
+token-cost-compare/
 ├── app.py                          # Streamlit entry that links to sub-pages
 ├── pages/
 │   ├── 0_Text_Input.py             # Manual text input workflow
 │   └── 1_File_Upload.py            # UTF-8 file upload workflow
-├── src/combined_token_counter/
+├── src/token_cost_compare/
 │   ├── __init__.py
 │   ├── config.py                   # Secrets/API key helpers
 │   ├── counter.py                  # TokenCounter class for programmatic use
@@ -261,7 +261,7 @@ All prices are per million tokens (USD):
 uv run pytest tests/ -v
 
 # Run tests with coverage
-uv run pytest tests/ --cov=src/combined_token_counter --cov-report=html
+uv run pytest tests/ --cov=src/token_cost_compare --cov-report=html
 
 # Run the app in development mode
 uv run streamlit run app.py --server.runOnSave true
